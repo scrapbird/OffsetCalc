@@ -182,14 +182,14 @@ namespace OffsetCalc {
 			this->TxtResult->Location = System::Drawing::Point(153, 85);
 			this->TxtResult->Name = L"TxtResult";
 			this->TxtResult->ReadOnly = true;
-			this->TxtResult->Size = System::Drawing::Size(141, 20);
+			this->TxtResult->Size = System::Drawing::Size(126, 20);
 			this->TxtResult->TabIndex = 8;
 			// 
 			// CopyButton
 			// 
-			this->CopyButton->Location = System::Drawing::Point(297, 83);
+			this->CopyButton->Location = System::Drawing::Point(285, 83);
 			this->CopyButton->Name = L"CopyButton";
-			this->CopyButton->Size = System::Drawing::Size(42, 23);
+			this->CopyButton->Size = System::Drawing::Size(49, 23);
 			this->CopyButton->TabIndex = 9;
 			this->CopyButton->Text = L"Copy";
 			this->CopyButton->UseVisualStyleBackColor = true;
