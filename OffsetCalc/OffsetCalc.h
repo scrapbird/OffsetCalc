@@ -245,27 +245,27 @@ namespace OffsetCalc {
 		}
 
 #pragma endregion
-	private: System::Void TxtFromBaseAddr_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-		this->CalculateOffsets();
-	}
+		private: System::Void TxtFromBaseAddr_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+			this->CalculateOffsets();
+		}
 
-	private: System::Void TxtTgtAddr_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-		this->CalculateOffsets();
-	}
+		private: System::Void TxtTgtAddr_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+			this->CalculateOffsets();
+		}
 
-	private: System::Void TxtToBaseAddr_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-		this->CalculateOffsets();
-	}
+		private: System::Void TxtToBaseAddr_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+			this->CalculateOffsets();
+		}
 
-	private: System::Void CopyButton_Click(System::Object^  sender, System::EventArgs^  e) {
-		Clipboard::SetDataObject(this->TxtResult->Text, true);
-	}
+		private: System::Void CopyButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			Clipboard::SetDataObject(this->TxtResult->Text, true);
+		}
 
-	private: System::Void SwapButton_Click(System::Object^  sender, System::EventArgs^  e) {
-		System::String ^from = this->TxtFromBaseAddr->Text;
-		System::String ^to = this->TxtToBaseAddr->Text;
-		this->TxtFromBaseAddr->Text = to;
-		this->TxtToBaseAddr->Text = from;
-	}
-};
+		private: System::Void SwapButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			System::String ^from = this->TxtFromBaseAddr->Text;
+			System::String ^to = this->TxtToBaseAddr->Text;
+			this->TxtFromBaseAddr->Text = to;
+			this->TxtToBaseAddr->Text = from;
+		}
+	};
 }
