@@ -186,7 +186,7 @@ namespace OffsetCalc {
 			this->TxtToBaseAddr->Name = L"TxtToBaseAddr";
 			this->TxtToBaseAddr->Size = System::Drawing::Size(181, 25);
 			this->TxtToBaseAddr->TabIndex = 7;
-			this->TxtToBaseAddr->Text = L"0x140000000";
+			this->TxtToBaseAddr->Text = L"0x00401000";
 			this->TxtToBaseAddr->TextChanged += gcnew System::EventHandler(this, &OffsetCalc::TxtToBaseAddr_TextChanged);
 			// 
 			// TxtResult
