@@ -44,10 +44,15 @@ namespace OffsetCalc {
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::Label^  label4;
-	private: System::Windows::Forms::TextBox^  TxtDbgBaseAddr;
+	private: System::Windows::Forms::TextBox^  TxtFromBaseAddr;
+
 	private: System::Windows::Forms::TextBox^  TxtTgtAddr;
-	private: System::Windows::Forms::TextBox^  TxtDisassBaseAddr;
+	private: System::Windows::Forms::TextBox^  TxtToBaseAddr;
+
 	private: System::Windows::Forms::Button^  CopyButton;
+	private: System::Windows::Forms::Button^  SwapButton;
+
+
 
 	private: System::Windows::Forms::TextBox^  TxtResult;
 
@@ -67,21 +72,21 @@ namespace OffsetCalc {
 
 		void CalculateOffsets() {
 			// Calculate the offets
-			UINT64 DbgBaseAddr = GetFromHextString(TxtDbgBaseAddr->Text->ToString());
-			System::Diagnostics::Debug::Write("Dbg base addr: " + DbgBaseAddr + "\n");
+			UINT64 FromBaseAddr = GetFromHextString(TxtFromBaseAddr->Text->ToString());
+			System::Diagnostics::Debug::Write("From base addr: " + FromBaseAddr + "\n");
 
 			UINT64 TargetAddr = GetFromHextString(TxtTgtAddr->Text->ToString());
 			System::Diagnostics::Debug::Write("Target addr: " + TargetAddr + "\n");
 
-			UINT64 DisassBaseAddr = GetFromHextString(TxtDisassBaseAddr->Text->ToString());
-			System::Diagnostics::Debug::Write("Disassembler base addr: " + DisassBaseAddr + "\n");
+			UINT64 ToBaseAddr = GetFromHextString(TxtToBaseAddr->Text->ToString());
+			System::Diagnostics::Debug::Write("To base addr: " + ToBaseAddr + "\n");
 
 			// Get offset
-			UINT64 offset = TargetAddr - DbgBaseAddr;
+			UINT64 offset = TargetAddr - FromBaseAddr;
 			System::Diagnostics::Debug::Write("Offset: " + offset + "\n");
 
 			// Calculate DisassBaseAddr + offset
-			UINT64 result = DisassBaseAddr + offset;
+			UINT64 result = ToBaseAddr + offset;
 			System::Diagnostics::Debug::Write("Result: " + result + "\n");
 
 			std::stringstream stream;
@@ -109,26 +114,27 @@ namespace OffsetCalc {
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->TxtDbgBaseAddr = (gcnew System::Windows::Forms::TextBox());
+			this->TxtFromBaseAddr = (gcnew System::Windows::Forms::TextBox());
 			this->TxtTgtAddr = (gcnew System::Windows::Forms::TextBox());
-			this->TxtDisassBaseAddr = (gcnew System::Windows::Forms::TextBox());
+			this->TxtToBaseAddr = (gcnew System::Windows::Forms::TextBox());
 			this->TxtResult = (gcnew System::Windows::Forms::TextBox());
 			this->CopyButton = (gcnew System::Windows::Forms::Button());
+			this->SwapButton = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(12, 10);
+			this->label1->Location = System::Drawing::Point(12, 13);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(120, 13);
+			this->label1->Size = System::Drawing::Size(96, 13);
 			this->label1->TabIndex = 0;
-			this->label1->Text = L"Debugger base address";
+			this->label1->Text = L"From base address";
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(12, 36);
+			this->label2->Location = System::Drawing::Point(12, 104);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(78, 13);
 			this->label2->TabIndex = 1;
@@ -137,57 +143,65 @@ namespace OffsetCalc {
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(12, 62);
+			this->label3->Location = System::Drawing::Point(12, 73);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(135, 13);
+			this->label3->Size = System::Drawing::Size(86, 13);
 			this->label3->TabIndex = 2;
-			this->label3->Text = L"Disassembler base address";
+			this->label3->Text = L"To base address";
 			// 
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(12, 88);
+			this->label4->Location = System::Drawing::Point(12, 135);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(37, 13);
 			this->label4->TabIndex = 3;
 			this->label4->Text = L"Result";
 			// 
-			// TxtDbgBaseAddr
+			// TxtFromBaseAddr
 			// 
-			this->TxtDbgBaseAddr->Location = System::Drawing::Point(153, 7);
-			this->TxtDbgBaseAddr->Name = L"TxtDbgBaseAddr";
-			this->TxtDbgBaseAddr->Size = System::Drawing::Size(181, 20);
-			this->TxtDbgBaseAddr->TabIndex = 5;
-			this->TxtDbgBaseAddr->TextChanged += gcnew System::EventHandler(this, &OffsetCalc::DbgBaseAddr_TextChanged);
+			this->TxtFromBaseAddr->Font = (gcnew System::Drawing::Font(L"Consolas", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->TxtFromBaseAddr->Location = System::Drawing::Point(114, 7);
+			this->TxtFromBaseAddr->Name = L"TxtFromBaseAddr";
+			this->TxtFromBaseAddr->Size = System::Drawing::Size(181, 25);
+			this->TxtFromBaseAddr->TabIndex = 5;
+			this->TxtFromBaseAddr->TextChanged += gcnew System::EventHandler(this, &OffsetCalc::TxtFromBaseAddr_TextChanged);
 			// 
 			// TxtTgtAddr
 			// 
-			this->TxtTgtAddr->Location = System::Drawing::Point(153, 33);
+			this->TxtTgtAddr->Font = (gcnew System::Drawing::Font(L"Consolas", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->TxtTgtAddr->Location = System::Drawing::Point(114, 98);
 			this->TxtTgtAddr->Name = L"TxtTgtAddr";
-			this->TxtTgtAddr->Size = System::Drawing::Size(181, 20);
+			this->TxtTgtAddr->Size = System::Drawing::Size(181, 25);
 			this->TxtTgtAddr->TabIndex = 6;
 			this->TxtTgtAddr->TextChanged += gcnew System::EventHandler(this, &OffsetCalc::TxtTgtAddr_TextChanged);
 			// 
-			// TxtDisassBaseAddr
+			// TxtToBaseAddr
 			// 
-			this->TxtDisassBaseAddr->Location = System::Drawing::Point(153, 59);
-			this->TxtDisassBaseAddr->Name = L"TxtDisassBaseAddr";
-			this->TxtDisassBaseAddr->Size = System::Drawing::Size(181, 20);
-			this->TxtDisassBaseAddr->TabIndex = 7;
-			this->TxtDisassBaseAddr->Text = L"0x140000000";
-			this->TxtDisassBaseAddr->TextChanged += gcnew System::EventHandler(this, &OffsetCalc::TxtDisassBaseAddr_TextChanged);
+			this->TxtToBaseAddr->Font = (gcnew System::Drawing::Font(L"Consolas", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->TxtToBaseAddr->Location = System::Drawing::Point(114, 67);
+			this->TxtToBaseAddr->Name = L"TxtToBaseAddr";
+			this->TxtToBaseAddr->Size = System::Drawing::Size(181, 25);
+			this->TxtToBaseAddr->TabIndex = 7;
+			this->TxtToBaseAddr->Text = L"0x140000000";
+			this->TxtToBaseAddr->TextChanged += gcnew System::EventHandler(this, &OffsetCalc::TxtToBaseAddr_TextChanged);
 			// 
 			// TxtResult
 			// 
-			this->TxtResult->Location = System::Drawing::Point(153, 85);
+			this->TxtResult->Font = (gcnew System::Drawing::Font(L"Consolas", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->TxtResult->Location = System::Drawing::Point(114, 129);
 			this->TxtResult->Name = L"TxtResult";
 			this->TxtResult->ReadOnly = true;
-			this->TxtResult->Size = System::Drawing::Size(126, 20);
+			this->TxtResult->Size = System::Drawing::Size(126, 25);
 			this->TxtResult->TabIndex = 8;
 			// 
 			// CopyButton
 			// 
-			this->CopyButton->Location = System::Drawing::Point(285, 83);
+			this->CopyButton->Location = System::Drawing::Point(246, 130);
 			this->CopyButton->Name = L"CopyButton";
 			this->CopyButton->Size = System::Drawing::Size(49, 23);
 			this->CopyButton->TabIndex = 9;
@@ -195,16 +209,27 @@ namespace OffsetCalc {
 			this->CopyButton->UseVisualStyleBackColor = true;
 			this->CopyButton->Click += gcnew System::EventHandler(this, &OffsetCalc::CopyButton_Click);
 			// 
+			// SwapButton
+			// 
+			this->SwapButton->Location = System::Drawing::Point(165, 38);
+			this->SwapButton->Name = L"SwapButton";
+			this->SwapButton->Size = System::Drawing::Size(75, 23);
+			this->SwapButton->TabIndex = 10;
+			this->SwapButton->Text = L"Swap";
+			this->SwapButton->UseVisualStyleBackColor = true;
+			this->SwapButton->Click += gcnew System::EventHandler(this, &OffsetCalc::SwapButton_Click);
+			// 
 			// OffsetCalc
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(346, 114);
+			this->ClientSize = System::Drawing::Size(309, 162);
+			this->Controls->Add(this->SwapButton);
 			this->Controls->Add(this->CopyButton);
 			this->Controls->Add(this->TxtResult);
-			this->Controls->Add(this->TxtDisassBaseAddr);
+			this->Controls->Add(this->TxtToBaseAddr);
 			this->Controls->Add(this->TxtTgtAddr);
-			this->Controls->Add(this->TxtDbgBaseAddr);
+			this->Controls->Add(this->TxtFromBaseAddr);
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
@@ -220,21 +245,27 @@ namespace OffsetCalc {
 		}
 
 #pragma endregion
-	private: System::Void TxtDbgBaseAddr_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+	private: System::Void TxtFromBaseAddr_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 		this->CalculateOffsets();
 	}
-	private: System::Void DbgBaseAddr_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-		this->CalculateOffsets();
-	}
+
 	private: System::Void TxtTgtAddr_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 		this->CalculateOffsets();
 	}
-	private: System::Void TxtDisassBaseAddr_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+
+	private: System::Void TxtToBaseAddr_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 		this->CalculateOffsets();
 	}
 
 	private: System::Void CopyButton_Click(System::Object^  sender, System::EventArgs^  e) {
 		Clipboard::SetDataObject(this->TxtResult->Text, true);
+	}
+
+	private: System::Void SwapButton_Click(System::Object^  sender, System::EventArgs^  e) {
+		System::String ^from = this->TxtFromBaseAddr->Text;
+		System::String ^to = this->TxtToBaseAddr->Text;
+		this->TxtFromBaseAddr->Text = to;
+		this->TxtToBaseAddr->Text = from;
 	}
 };
 }
